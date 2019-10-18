@@ -12,6 +12,8 @@ To start both the app and the "private" origin, run:
 yarn start
 ```
 
+Then [open your browser at http://localhost:4001](http://localhost:4001) to view the app.
+
 ## Reference
 
 https://pragmaticwebsecurity.com/talks/browsersecrets.html
