@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Secure Site</title>
+  </head>
+  <body>
+    <h1>My Secure Site</h1>
+
+    <button id="btn-store">Store token</button>
+    <button id="btn-fetch">Fetch token</button>
+
+    <div id="output"></div>
+
+    <script>
+      var body = document.getElementsByTagName("body")[0];
+      var storeButton = document.getElementById("btn-store");
+      var fetchButton = document.getElementById("btn-fetch");
+      var output = document.getElementById("output");
+      var iframe = document.createElement("iframe");
+
+      iframe.setAttribute("src", "http://localhost:4002");
+      iframe.setAttribute("style", "display: none");
+      body.appendChild(iframe);
+
+      storeButton.addEventListener("click", e => {
+        iframe.contentWindow.postMessage(
+          {
+            op: "store",
+            token: "some-token-value"
+          },
+          "http://localhost:4002"
+        );
+      });
+
+      fetchButton.addEventListener("click", e => {
+        iframe.contentWindow.postMessage(
+          {
+            op: "fetch"
+          },
+          "http://localhost:4002"
+        );
+      });
+
+      window.addEventListener(
+        "message",
+        e => {
+          if (e.origin !== "http://localhost:4002") return;
+
+          console.log(e.data.token);
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Private iframe</title>
+  </head>
+  <body>
+    <script>
+      window.addEventListener(
+        "message",
+        e => {
+          if (e.origin !== "http://localhost:4001") return;
+
+          if (e.data.op) {
+            switch (e.data.op) {
+              case "store": {
+                localStorage.setItem("token", e.data.token);
+                break;
+              }
+
+              case "fetch": {
+                var token = localStorage.getItem("token");
+
+                if (token && e.source) {
+                  e.source.postMessage({ token }, "http://localhost:4001");
+                }
+              }
+            }
+          }
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
